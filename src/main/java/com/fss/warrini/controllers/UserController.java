@@ -1,6 +1,7 @@
 package com.fss.warrini.controllers;
 
 
+import com.fss.warrini.dto.AuthResponseDto;
 import com.fss.warrini.dto.LoginDto;
 import com.fss.warrini.dto.UserDto;
 import com.fss.warrini.entities.FacultyEntity;
@@ -8,6 +9,7 @@ import com.fss.warrini.entities.UserEntity;
 import com.fss.warrini.mappers.UserMapper;
 import com.fss.warrini.repositories.FacultyRepo;
 import com.fss.warrini.repositories.UserRepo;
+import com.fss.warrini.security.JwtGenerator;
 import com.fss.warrini.services.UserServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +34,9 @@ public class UserController {
     @Autowired
     private AuthenticationManager authenticationManager;
 
+    @Autowired
+    private JwtGenerator jwtGenerator;
+
     @PostMapping("/add")
     public ResponseEntity<?> addUser(@RequestBody UserDto user) {
         UserDto savedUser = userServices.addUser(userMapper.toEntity(user));
@@ -45,7 +50,8 @@ public class UserController {
                 new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword())
         );
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        return ResponseEntity.ok().body(authentication);
+        String token = jwtGenerator.generateJwt(authentication);
+        return ResponseEntity.ok().body(new AuthResponseDto(token, "Bearer "));
     }
 
     @DeleteMapping("/delete/{userId}")
