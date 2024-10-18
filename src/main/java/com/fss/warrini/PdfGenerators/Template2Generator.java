@@ -59,7 +59,7 @@ public class Template2Generator {
             Files.createDirectories(sharedDir);
             Path tempHtmlPath = Files.createTempFile(sharedDir, "resume", ".html");
             Files.write(tempHtmlPath, htmlContent.getBytes());
-            File pngFile = HtmlToPngConverter.convertHtmlToPng(htmlContent,"./shared/output.png");
+            File pngFile = HtmlToPngConverter.convertHtmlToPng(htmlContent,"output.png");
 
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             Document document = new Document();
@@ -72,35 +72,14 @@ public class Template2Generator {
 
             document.add(img);
             document.close();
-            deleteDirectory(sharedDir.toString());
             return outputStream.toByteArray();
         }catch (Exception e) {
             e.printStackTrace();
-        }
-        finally {
-            deleteDirectory(sharedDir.toString());
         }
 
         return null;
 
     }
-
-    public static void deleteDirectory(String dirPath) {
-        String command;
-
-        if (System.getProperty("os.name").toLowerCase().contains("win")) {
-            command = "cmd /c rmdir /s /q \"" + dirPath + "\"";
-        } else {
-            command = "rm -rf \"" + dirPath + "\"";
-        }
-
-        try {
-            Process process = Runtime.getRuntime().exec(command);
-            process.waitFor();
-        } catch (IOException | InterruptedException e) {
-        }
-    }
-
 
     private static String fillSkills(List<String> skills) {
         String result = "";
