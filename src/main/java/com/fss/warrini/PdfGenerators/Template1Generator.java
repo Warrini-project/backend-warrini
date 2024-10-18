@@ -1,5 +1,7 @@
 package com.fss.warrini.PdfGenerators;
 
+import com.fss.warrini.dto.EducationDto;
+import com.fss.warrini.dto.ExperienceDto;
 import com.fss.warrini.dto.ResumeDto;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -55,12 +57,12 @@ public class Template1Generator {
             contentStream.stroke();
             drawSection(contentStream, "EDUCATION", 30, 540, headerFont, textFont, false, 70);
             int currTy = 520;
-            for (Map<String, String> edu : resumeDto.getEducations()) {
-                currTy -= drawSectionContent(false, false, contentStream, edu.get("degree"), 40, currTy, latoFont, 12,
+            for (EducationDto edu : resumeDto.getEducations()) {
+                currTy -= drawSectionContent(false, false, contentStream, edu.getDegree(), 40, currTy, latoFont, 12,
                         150) * 15;
-                currTy -= drawSectionContent(false, true, contentStream, edu.get("institution"), 53, currTy, textFont,
+                currTy -= drawSectionContent(false, true, contentStream, edu.getInstitution(), 53, currTy, textFont,
                         10, 150) * 15;
-                drawSectionContent(false, false, contentStream, edu.get("duration"), 53, currTy, textFont, 8, 150);
+                drawSectionContent(false, false, contentStream, edu.getDuration(), 53, currTy, textFont, 8, 150);
                 currTy -= 40;
             }
             drawSection(contentStream, "LANGUAGES", 30, 330, headerFont, textFont, false, 75);
@@ -79,14 +81,14 @@ public class Template1Generator {
             }
             drawSection(contentStream, "PROFESSIONAL EXPERIENCE", 250, 540, headerFont, textFont, false, 175);
             currTy = 520;
-            for (Map<String, Object> exp : resumeDto.getExperiences()) {
+            for (ExperienceDto exp : resumeDto.getExperiences()) {
                 currTy -= drawSectionContent(true, false, contentStream,
-                        (String) exp.get("name") + " (" + (String) exp.get("duration") + ")", 260, currTy, latoFont, 12,
+                        (String) exp.getName() + " (" + (String) exp.getDuration() + ")", 260, currTy, latoFont, 12,
                         500) * 15;
-                currTy -= drawSectionContent(false, true, contentStream, (String) exp.get("place"), 273, currTy,
+                currTy -= drawSectionContent(false, true, contentStream, (String) exp.getPlace(), 273, currTy,
                         textFont, 10,
                         500) * 15;
-                for (String task : (List<String>) exp.get("tasks")) {
+                for (String task : (List<String>) exp.getTasks()) {
                     currTy -= drawSectionContent(false, false, contentStream, "- " + task, 273, currTy, textFont, 8, 500)
                             * 15;
                 }

@@ -5,6 +5,12 @@ spring:
     url: jdbc:postgresql://localhost:5432/users
     username: postgres
     password: postgres
+  logging:
+    level:
+      org:
+        springframework:
+          web: DEBUG
+          security: DEBUG
 
   jpa:
     hibernate:

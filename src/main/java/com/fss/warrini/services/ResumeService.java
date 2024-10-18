@@ -6,4 +6,6 @@ import java.io.File;
 
 public interface ResumeService {
     byte[] generateTemplate1(ResumeDto resumeDto);
+    byte[] generateTemplate2(ResumeDto resumeDto, String profileImage);
+
 }

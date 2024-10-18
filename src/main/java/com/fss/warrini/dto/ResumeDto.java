@@ -12,10 +12,13 @@ public class ResumeDto {
     private String address;
     private String phone;
     private String email;
+    private String linkedin;
+    private String github;
     private String summary;
-    private List<Map<String, String>> educations;
+    private List<EducationDto> educations;
     private List<String> languages;
-    private List<Map<String, Object>> experiences;
+    private List<ExperienceDto> experiences;
     private List<String> skills;
     private List<String> certifications;
 }
+
