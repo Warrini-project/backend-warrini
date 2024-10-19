@@ -1,0 +1,392 @@
+<html>
+<head>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com"/>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Narrow&amp;family=Julius+Sans+One&amp;family=Open+Sans&amp;family=Source+Sans+Pro&amp;display=swap" rel="stylesheet" />
+</head>
+<!-- lezem el style ykoun intern sinon ma yet9rach -->
+<style>
+    h1 {
+        font-family: 'Julius Sans One', sans-serif;
+    }
+
+    h2 { /* Contact, Skills, Education, About me, Work Experience */
+        font-family: 'Archivo Narrow', sans-serif;
+    }
+
+    h3 { /* Accountant */
+        font-family: 'Open Sans', sans-serif;
+    }
+
+    .jobPosition span,
+    .projectName span {
+        font-family: 'Source Sans Pro', sans-serif;
+    }
+
+    .upperCase {
+        text-transform: uppercase;
+    }
+
+    .smallText,
+    .smallText span,
+    .smallText p,
+    .smallText a {
+        font-family: 'Source Sans Pro', sans-serif;
+        text-align: justify;
+    }
+
+    /* End Family */
+
+    /* Colors */
+    h1 {
+        color: #111;
+    }
+
+    .leftPanel,
+    .leftPanel a {
+        color: #bebebe;
+        text-decoration: none;
+    }
+
+    .leftPanel h2 {
+        color: white;
+    }
+
+    /* End Colors */
+
+    /* Sizes */
+    h1 {
+        font-weight: 300;
+        font-size: 1.2cm;
+        transform:scale(1,1.15);
+        margin-bottom: 0.2cm;
+        margin-top: 0.2cm;
+        text-transform: uppercase;
+    }
+
+    h2 {
+        margin-top: 0.1cm;
+        margin-bottom: 0.1cm;
+    }
+
+    .leftPanel,
+    .leftPanel a {
+        font-size: 0.38cm;
+    }
+
+    .projectName span,
+    .jobPosition span {
+        font-size: 0.35cm;
+    }
+
+    .smallText,
+    .smallText span,
+    .smallText p,
+    .smallText a {
+        font-size: 0.35cm;
+    }
+
+    .leftPanel .smallText,
+    .leftPanel .smallText,
+    .leftPanel .smallText span,
+    .leftPanel .smallText p,
+    .smallText a {
+        font-size: 0.45cm;
+    }
+
+    .contactIcon {
+        width: 0.5cm;
+        text-align: center;
+    }
+
+    p {
+        margin-top: 0.05cm;
+        margin-bottom: 0.05cm;
+    }
+    /* End Sizes */
+
+    .bolded {
+        font-weight: bold;
+    }
+
+    .white {
+        color: white;
+    }
+    /* End Fonts */
+
+    /* Layout */
+    body {
+        background: rgb(204,204,204);
+        width: 21cm;
+        height: 29.7cm;
+        margin: 0 auto;
+    }
+
+    /* Printing */
+    page {
+        background: white;
+        display: block;
+        margin: 0 auto;
+        margin-bottom: 0.5cm;
+    }
+
+    page[size="A4"] {
+        width: 21cm;
+        height: 29.7cm;
+    }
+
+    @page {
+        size: 21cm 29.7cm;
+        padding: 0;
+        margin: 0mm;
+        border: none;
+        border-collapse: collapse;
+    }
+    /* End Printing */
+
+    .container {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        height: 100%;
+    }
+
+    .leftPanel {
+        width: 27%;
+        background-color: #484444;
+        padding: 0.7cm;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .rightPanel {
+        width: 73%;
+        padding: 0.7cm;
+    }
+
+    .leftPanel img {
+        width: 4cm;
+        height: 4cm;
+        margin-bottom: 0.7cm;
+        border-radius: 50%;
+        border: 0.15cm solid white;
+        object-fit: cover;
+        object-position: 50% 50%;
+    }
+
+    .leftPanel .details {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .skill {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .bottomLineSeparator {
+        border-bottom: 0.05cm solid white;
+    }
+
+    .yearsOfExperience {
+        width: 1.6cm;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+    }
+
+    .alignleft {
+        text-align: left !important;
+        width: 1cm;
+    }
+
+    .alignright {
+        text-align: right !important;
+        width: 0.6cm;
+        margin-right: 0.1cm
+    }
+
+    .workExperience>ul {
+        list-style-type: none;
+        padding-left: 0;
+    }
+
+    .workExperience>ul>li {
+        position: relative;
+        margin: 0;
+        padding-bottom: 0.5cm;
+        padding-left: 0.5cm;
+    }
+
+    .workExperience>ul>li:before {
+        background-color: #b8abab;
+        width: 0.05cm;
+        content: '';
+        position: absolute;
+        top: 0.1cm;
+        bottom: -0.2cm; /* change this after border removal */
+        left: 0.05cm;
+    }
+
+    .workExperience>ul>li::after {
+        content: '';
+        position: absolute;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' aria-hidden='true' viewBox='0 0 32 32' focusable='false'%3E%3Ccircle stroke='none' fill='%23484444' cx='16' cy='16' r='10'%3E%3C/circle%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-size: contain;
+        left: -0.09cm;
+        top: 0;
+        width: 0.35cm;
+        height: 0.35cm;
+    }
+
+    .jobPosition {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .item {
+        padding-bottom: 0.7cm;
+        padding-top: 0.7cm;
+    }
+
+    .item h2{
+        margin-top: 0;
+    }
+
+    .lastParagrafNoMarginBottom {
+        margin-bottom: 0;
+    }
+
+    .workExperience>ul>li ul {
+        padding-left: 0.5cm;
+        list-style-type: disc;
+    }
+
+</style>
+<body>
+<page size="A4">
+    <div class="container">
+        <div class="leftPanel">
+            <img src="data:null;base64,"/>
+            <div class="details">
+                <div class="item bottomLineSeparator">
+                    <h2>
+                        CONTACT
+                    </h2>
+                    <div class="smallText" style="display: flex; flex-direction: column; gap: 15px;">
+                        <p style="display: flex; align-items: center; gap: 10px;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-telephone-fill" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M1.885.511a1.745 1.745 0 0 1 2.61.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.68.68 0 0 0 .178.643l2.457 2.457a.68.68 0 0 0 .644.178l2.189-.547a1.75 1.75 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.6 18.6 0 0 1-7.01-4.42 18.6 18.6 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877z"/>
+                            </svg>
+                            +216 20741124
+                        </p>
+                        <p style="display: flex; align-items: center; gap: 10px;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-envelope" viewBox="0 0 16 16">
+                                <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1zm13 2.383-4.708 2.825L15 11.105zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741M1 11.105l4.708-2.897L1 5.383z"/>
+                            </svg>
+                            <a href="mailto:kmailiaymen10@gmail.com" style="font-size: 75%;">
+                                kmailiaymen10@gmail.com
+                            </a>
+                        </p>
+                        <p style="display: flex; align-items: center; gap: 10px;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-geo-alt-fill" viewBox="0 0 16 16">
+                                <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10m0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6"/>
+                            </svg>
+                            Cité bahri Sfax
+                        </p>
+                        <p style="display: flex; align-items: center; gap: 10px;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-linkedin" viewBox="0 0 16 16">
+                                <path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854zm4.943 12.248V6.169H2.542v7.225zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248S2.4 3.226 2.4 3.934c0 .694.521 1.248 1.327 1.248zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016l.016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225z"/>
+                            </svg>
+                            <a href="#">
+                                aymen.kmaili
+                            </a>
+                        </p>
+                        <p class="lastParagrafNoMarginBottom" style="display: flex; align-items: center; gap: 10px;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-github" viewBox="0 0 16 16">
+                                <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8"/>
+                            </svg>
+                            <a href="#">
+                                kmaili.github.io
+                            </a>
+                        </p>
+                    </div>
+                </div>
+                <div class="item bottomLineSeparator">
+                    <h2>
+                        SKILLS
+                    </h2>
+                    <ul style="margin-left: -10%;">
+                        <li>Teaching and training skills for physical activities</li><br/><li>In-depth knowledge of modern teaching techniques</li><br/><li>Effective communication skills</li><br/><li>Time management and activity organization</li><br/>
+                    </ul>
+                </div>
+                <div class="item">
+                    <h2>
+                        Languages
+                    </h2>
+                    <ul style="margin-left: -10%;">
+                        <li style='font-size: 18px;'>Arabic</li><li style='font-size: 18px;'>French</li><li style='font-size: 18px;'>English</li>
+                    </ul>
+                </div>
+
+
+            </div>
+
+        </div>
+        <div class="rightPanel">
+            <div>
+                <h1>
+                    AYMEN KMAILI
+                </h1>
+                <div class="smallText">
+                    <h3>
+                        DATA ENGINEERING STUDENT
+                    </h3>
+                </div>
+            </div>
+            <div>
+                <h2>
+                    About me
+                </h2>
+                <div class="smallText">
+                    <p>
+                        Graduate of the Higher Institute of Sports and Physical Education in El Kef, holder of a national diploma in physical education. Passionate about developing students' athletic skills and designing innovative educational programs that promote physical fitness and overall health. I believe in the importance of sports as a means of social interaction and seek an opportunity to make a positive impact in my community...
+                    </p>
+                </div>
+            </div>
+            <div class="workExperience">
+                <h2>
+                    Work experience
+                </h2>
+                <ul>
+                    <li><div class="jobPosition"><span class="bolded" style="text-decoration: underline;">First Internship</span><span>Nov 2023 - Dec 2023</span> </div><div class="projectName bolded"> <span>the Fadel Ben Achour Preparatory School in Beni Khedash</span></div><div class="smallText"><ul> <li>Assisted in planning and delivering physical education lessons. </li> <li>Supported students during sports activities and ensured safety protocols. </li> </ul></div></li><li><div class="jobPosition"><span class="bolded" style="text-decoration: underline;">Second Internship</span><span>Feb 2024 - Mar 2024</span> </div><div class="projectName bolded"> <span>the Ibn Khaldun Primary School in Medenine</span></div><div class="smallText"><ul> <li>Developed engaging activities to improve students' physical fitness. </li> <li>Worked closely with teachers to adapt lessons for different skill levels. </li> </ul></div></li>
+                </ul>
+            </div>
+            <div class="workExperience">
+                <h2>
+                    EDUCATION
+                </h2>
+                <ul><li><div class="jobPosition"><span style="font-size: 20px; font-weight: bold;">Bachelor's Degree in Physical Education</span><span>2021 - 2024</span> </div><p>Higher Institute of Sports and Physical Education in El Kef</p></li><li><div class="jobPosition"><span style="font-size: 20px; font-weight: bold;">Baccalaureate in Scientific Section</span><span>2019 - 2020</span> </div><p>Beni Khedash Institute</p></li></ul>
+
+            </div>
+
+        </div>
+    </div>
+</page>
+<page size="A4">
+    <div class="container">
+        <div class="leftPanel">
+
+        </div>
+        <div class="rightPanel">
+        </div>
+    </div>
+</page>
+</body>
+</html>

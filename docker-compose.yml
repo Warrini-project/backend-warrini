@@ -1,5 +1,6 @@
 version: '3'
 services:
+
   postgres:
     image: postgres:latest
     container_name: postgres-container-warrini
@@ -11,3 +12,18 @@ services:
       - ./postgres-database:/var/lib/postgresql/data
     ports:
       - "5432:5432"
+
+  application:
+    image: warrini:0.0.1
+    container_name: application-container
+    ports:
+      - "443:8080"
+    environment:
+      SPRING_APPLICATION_NAME: warrini
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/users
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      PORT: 8080
+    depends_on:
+      - postgres
+

@@ -8,24 +8,39 @@ import com.lowagie.text.pdf.PdfWriter;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import com.lowagie.text.Document;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
+import org.springframework.stereotype.Component;
+
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.stream.Collectors;
 
+@Component
 public class Template2Generator {
+
     private static ResumeDto resumeDto;
 
-    public static byte[] generate(ResumeDto input, String profileImage){
+    public static byte[] generate(ResumeDto input, String profileImage, ResourceLoader resourceLoader){
 
         resumeDto = input;
         try {
-            Resource resource = new ClassPathResource("templates/template2.html");
-            Path path = resource.getFile().toPath();
-            String htmlBaseContent = new String(Files.readAllBytes(path));
+            Resource resource = resourceLoader.getResource("classpath:templates/template2.html");
+            //Resource resource = new ClassPathResource("templates/template2.html");
+            /*Path path = resource.getFile().toPath();
+            String htmlBaseContent = new String(Files.readAllBytes(path));*/
+            InputStream inputStream = resource.getInputStream();
+
+            // Read the contents of the template file as a string
+            String htmlBaseContent = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))
+                    .lines()
+                    .collect(Collectors.joining("\n"));
 
             String modifiedHtml = htmlBaseContent.toString()
                     .replace("{{name}}", resumeDto.getName())

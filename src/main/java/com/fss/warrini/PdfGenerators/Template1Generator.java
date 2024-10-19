@@ -192,7 +192,7 @@ public class Template1Generator {
         if (containsDate) {
             contentStream.setNonStrokingColor(Color.GRAY);
             contentStream.setFont(font, fontSize - 2);
-            contentStream.showText("\s\s\s\s" + dateSection);
+            contentStream.showText("    " + dateSection);
             contentStream.setNonStrokingColor(Color.decode("#323b4c"));
         }
         contentStream.endText();

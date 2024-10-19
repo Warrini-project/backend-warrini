@@ -1,18 +1,14 @@
 server:
-  port: 443
+  port: ${PORT:8080}  # Uses PORT environment variable or defaults to 8080 if not set
+
 spring:
   application:
-    name: warrini
+    name: ${SPRING_APPLICATION_NAME:warrini}
   datasource:
-    url: jdbc:postgresql://localhost:5432/users
-    username: postgres
-    password: postgres
-  logging:
-    level:
-      org:
-        springframework:
-          web: DEBUG
-          security: DEBUG
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/users}
+    username: ${SPRING_DATASOURCE_USERNAME:postgres}
+    password: ${SPRING_DATASOURCE_PASSWORD:postgres}
+
 
   jpa:
     hibernate:
