@@ -9,6 +9,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,8 +22,11 @@ public interface QuizzMapper {
     QuizzEntity toEntity(QuizzDto quizzDto);
 
     default List<QuestionDto> mapQuestions(List<QuestionEntity> questionEntities) {
-        return questionEntities.stream()
+        try{return questionEntities.stream()
                 .map(questionEntity -> Mappers.getMapper(QuestionMapper.class).toDto(questionEntity))
-                .collect(Collectors.toList());
+                .collect(Collectors.toList());}catch (NullPointerException e){
+            return new ArrayList<>();
+            // in case when the admin want to add quizz without questions at beginning
+        }
     }
 }

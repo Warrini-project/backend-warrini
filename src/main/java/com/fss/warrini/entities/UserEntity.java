@@ -4,6 +4,9 @@ package com.fss.warrini.entities;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Data
 public class UserEntity {
@@ -23,6 +26,9 @@ public class UserEntity {
     private FacultyEntity faculty;
 
     private boolean want_notified;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    private Set<String> roles = new HashSet<>();
 
 
 }

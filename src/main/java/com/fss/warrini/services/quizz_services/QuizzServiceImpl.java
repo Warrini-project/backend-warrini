@@ -6,13 +6,13 @@ import com.fss.warrini.dto.quizz_dtos.QuizzDto;
 import com.fss.warrini.entities.quizz_entities.ChoiceEntity;
 import com.fss.warrini.entities.quizz_entities.QuestionEntity;
 import com.fss.warrini.entities.quizz_entities.QuizzEntity;
+import com.fss.warrini.exceptions.*;
 import com.fss.warrini.mappers.quizz_mappers.ChoiceMapper;
 import com.fss.warrini.mappers.quizz_mappers.QuestionMapper;
 import com.fss.warrini.mappers.quizz_mappers.QuizzMapper;
 import com.fss.warrini.repositories.quizz_repositories.ChoiceRepo;
 import com.fss.warrini.repositories.quizz_repositories.QuestionRepo;
 import com.fss.warrini.repositories.quizz_repositories.QuizzRepo;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,10 +48,10 @@ public class QuizzServiceImpl implements QuizzService {
     }
 
     @Override
-    public QuizzDto updateQuizz(QuizzDto quizzDto) {
-        QuizzEntity quizz = quizzRepo.findById(quizzDto.getId()).orElseThrow(() -> new RuntimeException("Quizz not found"));
+    public QuizzDto updateQuizz(QuizzDto quizzDto){
+        QuizzEntity quizz = quizzRepo.findById(quizzDto.getId()).orElseThrow(() -> new QuizzNotfoundException());
         if(quizzDto.getQuestions() != null) {
-            throw new RuntimeException("Updating questions here is not allowed, please use the dedicated endpoint [/api/quizz/update_question]");
+            throw new UpdateQuestionNotAllowedException();
         }
         updateIfNotNull(quizzDto.getDomain(), quizz::setDomain);
         updateIfNotNull(quizzDto.getDescription(), quizz::setDescription);
@@ -67,8 +67,8 @@ public class QuizzServiceImpl implements QuizzService {
 
     @Override
     @Transactional
-    public QuestionDto addQuestion(QuestionDto questionDto) {
-        QuizzEntity quizz = quizzRepo.findById(questionDto.getQuizzId()).orElseThrow(() -> new RuntimeException("Quizz not found"));
+    public QuestionDto addQuestion(QuestionDto questionDto){
+        QuizzEntity quizz = quizzRepo.findById(questionDto.getQuizzId()).orElseThrow(() -> new QuizzNotfoundException());
         QuestionEntity questionEntity = questionMapper.toEntity(questionDto);
         questionEntity.setQuizz(quizz);
         quizz.getQuestions().add(questionEntity);
@@ -76,15 +76,13 @@ public class QuizzServiceImpl implements QuizzService {
         QuestionEntity savedQuestion = questionRepo.save(questionEntity);
 
         QuestionDto savedQuestionDto = questionMapper.toDto(savedQuestion);
-        //savedQuestionDto.getChoices().forEach(choiceDto -> {choiceDto.setQuestionId(savedQuestionDto.getId());});
-        //savedQuestionDto.setQuizzId(quizz.getId());
         return savedQuestionDto;
     }
 
     @Override
     @Transactional
-    public String deleteQuestion(Long questionId) {
-        QuestionEntity questionEntity = questionRepo.findById(questionId).orElseThrow(() -> new RuntimeException("Question not found"));
+    public String deleteQuestion(Long questionId){
+        QuestionEntity questionEntity = questionRepo.findById(questionId).orElseThrow(() -> new QuestionNotfoundException());
         QuizzEntity quizz = questionEntity.getQuizz();
         quizz.getQuestions().remove(questionEntity);
         quizzRepo.save(quizz);
@@ -92,33 +90,30 @@ public class QuizzServiceImpl implements QuizzService {
     }
 
     @Override
-    public QuestionDto updateQuestion(QuestionDto questionDto) {
-        QuestionEntity question = questionRepo.findById(questionDto.getId()).orElseThrow(() -> new RuntimeException("Question not found"));
+    public QuestionDto updateQuestion(QuestionDto questionDto){
+        QuestionEntity question = questionRepo.findById(questionDto.getId()).orElseThrow(() -> new QuestionNotfoundException());
         QuizzEntity quizz = question.getQuizz();
         if (!Objects.equals(questionDto.getQuizzId(), quizz.getId())) {
-            throw new RuntimeException("Changing quizz is not allowed");
+            throw new ChangeQuizzNotAllowedException();
         }
         if(questionDto.getChoices() != null) {
-            throw new RuntimeException("Updating choices here is not allowed, please use the dedicated endpoint [/api/quizz/update_choice]");
+            throw new UpdateChoicesNotAllowedException();
         }
         question.setSentence(questionDto.getSentence());
         QuestionEntity questionEntity = questionRepo.save(question);
         QuestionDto savedQuestionDto = questionMapper.toDto(questionEntity);
-        //savedQuestionDto.setQuizzId(questionDto.getQuizzId());
         return savedQuestionDto;
     }
 
     @Override
     @Transactional
-    public ChoiceDto addChoice(ChoiceDto choiceDto) {
+    public ChoiceDto addChoice(ChoiceDto choiceDto){
         QuestionEntity __ = questionRepo.findById(choiceDto.getQuestionId())
-                .orElseThrow(() -> new RuntimeException("Question not found"));
+                .orElseThrow(() -> new QuestionNotfoundException());
 
         ChoiceEntity choiceEntity = choiceMapper.toEntity(choiceDto);
-        //choiceEntity.setQuestion(question);
         ChoiceEntity savedChoice = choiceRepo.save(choiceEntity);
         ChoiceDto savedChoiceDto = choiceMapper.toDto(savedChoice);
-        //savedChoiceDto.setQuestionId(savedChoice.getId());
         return savedChoiceDto;
 
     }
@@ -127,9 +122,9 @@ public class QuizzServiceImpl implements QuizzService {
     @Transactional
     public String deleteChoice(Long questionId, Long choiceId) {
         QuestionEntity question = questionRepo.findById(questionId)
-                .orElseThrow(() -> new RuntimeException("Question not found"));
+                .orElseThrow(() -> new QuestionNotfoundException());
 
-        ChoiceEntity choiceEntity = choiceRepo.findById(choiceId).orElseThrow(() -> new RuntimeException("Choice not found"));
+        ChoiceEntity choiceEntity = choiceRepo.findById(choiceId).orElseThrow(() -> new ChoiceNotfoundException());
         question.getChoices().remove(choiceEntity);
         questionRepo.save(question);
         return "Choice deleted";
@@ -137,16 +132,15 @@ public class QuizzServiceImpl implements QuizzService {
 
     @Override
     @Transactional
-    public ChoiceDto updateChoice(ChoiceDto choiceDto) {
-        ChoiceEntity choice = choiceRepo.findById(choiceDto.getId()).orElseThrow(() -> new RuntimeException("Choice not found"));
+    public ChoiceDto updateChoice(ChoiceDto choiceDto)  {
+        ChoiceEntity choice = choiceRepo.findById(choiceDto.getId()).orElseThrow(() -> new ChoiceNotfoundException());
         QuestionEntity question = choice.getQuestion();
 
         if (!question.getId().equals(choiceDto.getQuestionId())) {
-            throw new RuntimeException("Changing question is not allowed");
+            throw new ChangeQuestionNotAllowedException();
         }
         ChoiceEntity choiceEntity = choiceRepo.save(choiceMapper.toEntity(choiceDto));
         ChoiceDto savedChoiceDto = choiceMapper.toDto(choiceEntity);
-        //savedChoiceDto.setQuestionId(choiceDto.getQuestionId());
         return savedChoiceDto;
     }
 

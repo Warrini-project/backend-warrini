@@ -7,9 +7,9 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface UserMapper {
-    @Mapping(source = "faculty.id", target = "faculty")
+    @Mapping(source = "faculty.id", target = "facultyId")
     UserDto toDto(UserEntity userEntity);
 
-    @Mapping(source = "faculty", target = "faculty.id")
+    @Mapping(source = "facultyId", target = "faculty.id")
     UserEntity toEntity(UserDto userDto);
 }

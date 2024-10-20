@@ -10,8 +10,10 @@ import com.fss.warrini.mappers.UserMapper;
 import com.fss.warrini.repositories.FacultyRepo;
 import com.fss.warrini.repositories.UserRepo;
 import com.fss.warrini.security.JwtGenerator;
+import com.fss.warrini.services.CustomUserDetailsService;
 import com.fss.warrini.services.UserServices;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -29,7 +31,7 @@ public class UserController {
     private UserServices userServices;
 
     @Autowired
-    private UserMapper userMapper;
+    private CustomUserDetailsService customUserDetailsService;
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -38,14 +40,14 @@ public class UserController {
     private JwtGenerator jwtGenerator;
 
     @PostMapping("/add")
-    public ResponseEntity<?> addUser(@RequestBody UserDto user) {
-        UserDto savedUser = userServices.addUser(userMapper.toEntity(user));
+    public ResponseEntity<?> addUser(@RequestBody UserDto userDto) {
+        UserDto savedUser = userServices.addUser(userDto);
         return ResponseEntity.ok().body(savedUser);
     }
 
     @PostMapping("/authenticate")
     public ResponseEntity<?> authenticate(@RequestBody LoginDto loginDto) {
-        System.out.println(loginDto+"\n\n\n");
+        System.out.println(loginDto + "\n\n\n");
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword())
         );
@@ -58,5 +60,17 @@ public class UserController {
     public ResponseEntity<?> deleteUser(@PathVariable Long userId) {
         userServices.deleteUser(userId);
         return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<?> updateUser(@RequestBody UserDto userDto, Authentication authentication) {
+        // Get the authenticated user's ID
+        String authenticatedUserUsername = authentication.getName();
+
+        // Check if the username in the path matches the authenticated user's username
+        if (!authenticatedUserUsername.equals(userDto.getUsername())) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You can update only your own credentials.");
+        }
+        return ResponseEntity.ok().body(userServices.updateUser(userDto));
     }
 }

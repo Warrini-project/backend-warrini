@@ -13,7 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Optional;
 
 @Service
@@ -32,18 +35,31 @@ public class UserServicesImpl implements UserServices {
     private PasswordEncoder passwordEncoder;
 
     @Override
-    public UserDto addUser(UserEntity user) {
-         userRepo.findByUsername(user.getUsername()).ifPresent(foundedUser -> {
+    public UserDto addUser(UserDto userDto) {
+         userRepo.findByUsername(userDto.getUsername()).ifPresent(foundedUser -> {
              throw new UserNameAlreadyUsedException("Username already used");
          });
-         facultyRepo.findById(user.getFaculty().getId()).orElseThrow(() -> new FacultyNotFoundException("Faculty not found"));
-         user.setPassword(passwordEncoder.encode(user.getPassword()));
-         return userMapper.toDto(userRepo.save(user));
+         facultyRepo.findById(userDto.getFacultyId()).orElseThrow(() -> new FacultyNotFoundException("Faculty not found"));
+
+         UserEntity userEntity = userMapper.toEntity(userDto);
+         userEntity.setPassword(passwordEncoder.encode(userDto.getPassword()));
+         userEntity.setRoles(new HashSet<>(Arrays.asList("USER")));
+         return userMapper.toDto(userRepo.save(userEntity));
     }
 
     @Override
-    public UserDto updateUser(UserEntity user) {
-        return userMapper.toDto(userRepo.save(user));
+    @Transactional
+    public UserDto updateUser(UserDto userDto) {
+
+        UserEntity userEntity = userRepo.findByUsername(userDto.getUsername()).orElseThrow(() -> new UserNotFoundException("User not found"));
+        if (userDto.getPassword() != null && !passwordEncoder.matches(userDto.getPassword(), userEntity.getPassword())) {
+            userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        } else {
+            userDto.setPassword(userEntity.getPassword());
+        }
+        userDto.setId(userEntity.getId());
+
+        return userMapper.toDto(userRepo.save(userMapper.toEntity(userDto)));
     }
 
     @Override

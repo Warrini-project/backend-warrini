@@ -21,9 +21,8 @@ public class SecurityConfig {
 
     @Autowired
     private JwtEntryPoint jwtEntryPoint;
-
     @Autowired
-    private CustomUserDetailsService customUserDetailsService;
+    private CustomAccessDeniedHandler customAccessDeniedHandler;
 
     @Autowired
     private JwtAuthenticationFilter jwtAuthenticationFilter;
@@ -32,16 +31,18 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
-                .exceptionHandling()
-                .authenticationEntryPoint(jwtEntryPoint)
-                .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeHttpRequests((requests) -> requests
-                                .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/api/user/add", "/api/user/authenticate", "/api/faculty/**", "/api/quizz/**").permitAll()
+                        .requestMatchers("/api/faculty/**", "/api/quizz/**").hasAuthority("ADMIN")
+                                .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/api/user/add", "/api/user/authenticate").permitAll()
                         .anyRequest().authenticated()
-                );
+
+                )
+                .exceptionHandling()
+                    .authenticationEntryPoint(jwtEntryPoint)
+                    .accessDeniedHandler(customAccessDeniedHandler);
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }

@@ -13,6 +13,6 @@ public class UserDto {
     private String phone;
     private String domain_studies;
     private String level_studies;
-    private Long faculty;
+    private Long facultyId;
     private boolean want_notified;
 }
