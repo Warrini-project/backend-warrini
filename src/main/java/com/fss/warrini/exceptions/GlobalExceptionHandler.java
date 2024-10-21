@@ -59,4 +59,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> changeQuizzNotAllowed(ChangeQuizzNotAllowedException ex) {
         return ResponseEntity.badRequest().body(ex.getMessage());
     }
+
+    @ExceptionHandler(QuizzResponsesEmptyException.class)
+    public ResponseEntity<String> quizzResponsesEmpty(QuizzResponsesEmptyException ex) {
+        return ResponseEntity.badRequest().body(ex.getMessage());
+    }
 }

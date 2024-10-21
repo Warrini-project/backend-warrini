@@ -51,7 +51,7 @@ public class UserServicesImpl implements UserServices {
     @Transactional
     public UserDto updateUser(UserDto userDto) {
 
-        UserEntity userEntity = userRepo.findByUsername(userDto.getUsername()).orElseThrow(() -> new UserNotFoundException("User not found"));
+        UserEntity userEntity = userRepo.findByUsername(userDto.getUsername()).orElseThrow(() -> new UserNotFoundException());
         if (userDto.getPassword() != null && !passwordEncoder.matches(userDto.getPassword(), userEntity.getPassword())) {
             userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
         } else {
@@ -64,7 +64,7 @@ public class UserServicesImpl implements UserServices {
 
     @Override
     public void deleteUser(Long userId) {
-        userRepo.findById(userId).orElseThrow(() -> new UserNotFoundException("User not found"));
+        userRepo.findById(userId).orElseThrow(() -> new UserNotFoundException());
         userRepo.deleteById(userId);
     }
 }

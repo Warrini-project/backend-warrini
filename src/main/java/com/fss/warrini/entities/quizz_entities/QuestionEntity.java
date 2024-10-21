@@ -9,6 +9,8 @@ import java.util.List;
 
 @Data
 @Entity
+
+@Table(name ="questions")
 public class QuestionEntity {
 
     @Id
