@@ -2,6 +2,9 @@ package com.fss.warrini.dto;
 
 import lombok.Data;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Data
 public class UserDto {
     private Long id;
@@ -15,4 +18,5 @@ public class UserDto {
     private String level_studies;
     private Long facultyId;
     private boolean want_notified;
+    private Set<String> roles = new HashSet<>();
 }
