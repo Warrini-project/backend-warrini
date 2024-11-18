@@ -5,9 +5,9 @@ services:
     image: postgres:latest
     container_name: postgres-container-warrini
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: users
+      POSTGRES_USER: warrini
+      POSTGRES_PASSWORD: warrini
+      POSTGRES_DB: warrini
     volumes:
       - ./postgres-database:/var/lib/postgresql/data
     ports:

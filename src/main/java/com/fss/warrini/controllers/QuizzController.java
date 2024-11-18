@@ -54,4 +54,9 @@ public class QuizzController {
     public ResponseEntity<?> updateQuizz(@RequestBody QuizzDto quizzDto) {
         return ResponseEntity.ok().body(quizzService.updateQuizz(quizzDto));
     }
+
+    @GetMapping("/get_quizz_by_skill")
+    public ResponseEntity<?> getQuizzBySkill(@RequestParam String skill){
+        return ResponseEntity.ok(quizzService.getQuizzBySkill(skill));
+    }
 }

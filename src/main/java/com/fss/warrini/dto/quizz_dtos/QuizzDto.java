@@ -12,7 +12,7 @@ public class QuizzDto {
     private String description;
     private String image; // store quizz image id stored on mongo db
     private String level;
-    private String domain;
+    private String skill;
 
     private List<QuestionDto> questions;
 }

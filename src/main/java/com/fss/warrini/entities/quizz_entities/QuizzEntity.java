@@ -16,7 +16,7 @@ public class QuizzEntity {
     private String description;
     private String image; // store quizz image id stored on mongo db
     private String level;
-    private String domain;
+    private String skill;
 
     @OneToMany(mappedBy = "quizz", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<QuestionEntity> questions;

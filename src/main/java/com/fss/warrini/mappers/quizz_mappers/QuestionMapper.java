@@ -11,6 +11,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,10 +26,10 @@ public interface QuestionMapper {
     QuestionEntity toEntity(QuestionDto dto);
 
     default List<ChoiceDto> mapChoices(List<ChoiceEntity> choiceEntities, Long questionId) {
-        return choiceEntities.stream()
+        return choiceEntities != null ? choiceEntities.stream()
                 .map(choiceEntity -> {
                     return Mappers.getMapper(ChoiceMapper.class).toDtoWithQuestionId(choiceEntity, questionId);
                 })
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()): new ArrayList<>();
     }
 }

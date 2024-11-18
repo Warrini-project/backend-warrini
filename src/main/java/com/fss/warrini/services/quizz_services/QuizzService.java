@@ -15,4 +15,6 @@ public interface QuizzService {
     ChoiceDto addChoice(ChoiceDto choiceDto);
     String deleteChoice(Long questionId, Long choiceId);
     ChoiceDto updateChoice(ChoiceDto choiceDto);
+
+    QuizzDto getQuizzBySkill(String skill);
 }

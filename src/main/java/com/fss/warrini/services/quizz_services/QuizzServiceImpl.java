@@ -17,7 +17,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Objects;
+import java.util.Random;
 import java.util.function.Consumer;
 
 @Service
@@ -53,7 +55,7 @@ public class QuizzServiceImpl implements QuizzService {
         if(quizzDto.getQuestions() != null) {
             throw new UpdateQuestionNotAllowedException();
         }
-        updateIfNotNull(quizzDto.getDomain(), quizz::setDomain);
+        updateIfNotNull(quizzDto.getSkill(), quizz::setSkill);
         updateIfNotNull(quizzDto.getDescription(), quizz::setDescription);
         updateIfNotNull(quizzDto.getLevel(), quizz::setLevel);
         updateIfNotNull(quizzDto.getImage(), quizz::setImage);
@@ -72,7 +74,11 @@ public class QuizzServiceImpl implements QuizzService {
         QuestionEntity questionEntity = questionMapper.toEntity(questionDto);
         questionEntity.setQuizz(quizz);
         quizz.getQuestions().add(questionEntity);
-        questionEntity.getChoices().forEach(choiceEntity -> {choiceEntity.setQuestion(questionEntity);});
+        if (questionEntity.getChoices() != null) {
+            questionEntity.getChoices().forEach(choiceEntity -> {
+                choiceEntity.setQuestion(questionEntity);
+            });
+        }
         QuestionEntity savedQuestion = questionRepo.save(questionEntity);
 
         QuestionDto savedQuestionDto = questionMapper.toDto(savedQuestion);
@@ -150,5 +156,12 @@ public class QuizzServiceImpl implements QuizzService {
         if (value != null) {
             setter.accept(value);
         }
+    }
+
+    @Override
+    public QuizzDto getQuizzBySkill(String skill){
+        List<QuizzEntity> quizz = quizzRepo.findBySkill(skill).orElseThrow(() -> new QuizzNotfoundException());
+        Random random = new Random();
+        return quizzMapper.toDto(quizz.get(random.nextInt(quizz.size())));
     }
 }

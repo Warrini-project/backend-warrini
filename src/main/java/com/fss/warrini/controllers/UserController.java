@@ -30,8 +30,6 @@ public class UserController {
     @Autowired
     private UserServices userServices;
 
-    @Autowired
-    private CustomUserDetailsService customUserDetailsService;
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -47,7 +45,6 @@ public class UserController {
 
     @PostMapping("/authenticate")
     public ResponseEntity<?> authenticate(@RequestBody LoginDto loginDto) {
-        System.out.println(loginDto + "\n\n\n");
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword())
         );
